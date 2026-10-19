@@ -30,6 +30,8 @@ import ac.cr.utn.campusgo.data.datasource.local.InternalPhotoLocalDataSource
 import ac.cr.utn.campusgo.data.repositories.PhotoRepositoryImpl
 import ac.cr.utn.campusgo.domain.services.PhotoService
 import android.widget.ImageView
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 
 class MainActivity : AppCompatActivity() {
 
@@ -115,81 +117,194 @@ class MainActivity : AppCompatActivity() {
         presenter.load()
     }
 
+
     private fun buildScreen() {
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(dp(16), dp(8), dp(16), dp(12))
-            setBackgroundColor(0xFFF6F7FB.toInt())
+            setBackgroundColor(getColor(R.color.campus_cream))
         }
 
         val toolbar = MaterialToolbar(this).apply {
             title = "CampusGo"
-            subtitle = "Explorador de servicios universitarios"
-            setTitleTextColor(0xFF172554.toInt())
-            setSubtitleTextColor(0xFF475569.toInt())
-            setBackgroundColor(0xFFF6F7FB.toInt())
-            elevation = 0f
+            subtitle = "Explorá los servicios de tu campus"
+            setTitleTextColor(Color.WHITE)
+            setSubtitleTextColor(Color.parseColor("#D5E7ED"))
+            setBackgroundColor(getColor(R.color.campus_navy))
+            setPadding(dp(12), dp(4), dp(12), dp(4))
+            elevation = dp(3).toFloat()
         }
+
         root.addView(
             toolbar,
             LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                dp(76)
+                dp(88)
             )
+        )
+
+        val content = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(18), dp(16), dp(18), dp(16))
+        }
+
+        val searchLabel = TextView(this).apply {
+            text = "BUSCAR LUGARES"
+            textSize = 12f
+            typeface = android.graphics.Typeface.DEFAULT_BOLD
+            setTextColor(getColor(R.color.campus_text_secondary))
+        }
+        content.addView(
+            searchLabel,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                bottomMargin = dp(7)
+            }
         )
 
         searchInput = EditText(this).apply {
-            hint = "Buscar lugares..."
+            hint = "Nombre, edificio o servicio..."
             setSingleLine(true)
-            setPadding(dp(12), 0, dp(12), 0)
-            setBackgroundColor(0xFFFFFFFF.toInt())
+            textSize = 15f
+            setTextColor(getColor(R.color.campus_text_primary))
+            setHintTextColor(getColor(R.color.campus_text_secondary))
+            setPadding(dp(15), 0, dp(15), 0)
+            background = roundedBackground(
+                Color.WHITE,
+                "#DCE5E8",
+                14
+            )
+            elevation = dp(1).toFloat()
         }
-        root.addView(
+
+        content.addView(
             searchInput,
             LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                dp(52)
-            ).apply { bottomMargin = dp(8) }
+                dp(54)
+            ).apply {
+                bottomMargin = dp(18)
+            }
         )
 
-        categoryFilter = Spinner(this)
-        categoryFilter.adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_dropdown_item,
-            categories
+        val categoryLabel = TextView(this).apply {
+            text = "CATEGORÍA"
+            textSize = 12f
+            typeface = android.graphics.Typeface.DEFAULT_BOLD
+            setTextColor(getColor(R.color.campus_text_secondary))
+        }
+
+        content.addView(
+            categoryLabel,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                bottomMargin = dp(6)
+            }
         )
-        root.addView(
+
+        categoryFilter = Spinner(this).apply {
+            adapter = ArrayAdapter(
+                this@MainActivity,
+                android.R.layout.simple_spinner_dropdown_item,
+                categories
+            )
+            background = roundedBackground(
+                Color.WHITE,
+                "#DCE5E8",
+                12
+            )
+            setPadding(dp(10), 0, dp(10), 0)
+        }
+
+        content.addView(
             categoryFilter,
             LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                dp(48)
-            )
+                dp(50)
+            ).apply {
+                bottomMargin = dp(22)
+            }
         )
+
+        val sectionHeader = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+        }
 
         val sectionTitle = TextView(this).apply {
             text = "Lugares del campus"
-            textSize = 20f
-            setTextColor(0xFF172554.toInt())
-            setPadding(0, dp(16), 0, dp(8))
+            textSize = 21f
             typeface = android.graphics.Typeface.DEFAULT_BOLD
+            setTextColor(getColor(R.color.campus_navy))
         }
-        root.addView(sectionTitle)
+
+        sectionHeader.addView(
+            sectionTitle,
+            LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            )
+        )
+
+        val sectionAccent = View(this).apply {
+            setBackgroundColor(getColor(R.color.campus_amber))
+        }
+
+        sectionHeader.addView(
+            sectionAccent,
+            LinearLayout.LayoutParams(dp(34), dp(4))
+        )
+
+        content.addView(
+            sectionHeader,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                bottomMargin = dp(10)
+            }
+        )
 
         emptyMessage = TextView(this).apply {
-            text = "No hay lugares para mostrar. Agregá el primero."
+            text = "Todavía no hay lugares registrados.\nAgregá el primero para comenzar."
             textSize = 14f
             gravity = Gravity.CENTER
-            setTextColor(0xFF64748B.toInt())
-            setPadding(dp(12), dp(24), dp(12), dp(24))
+            setTextColor(getColor(R.color.campus_text_secondary))
+            setPadding(dp(16), dp(26), dp(16), dp(26))
+            background = roundedBackground(
+                Color.WHITE,
+                "#DCE5E8",
+                16
+            )
         }
-        root.addView(emptyMessage)
 
-        val scroll = ScrollView(this)
+        content.addView(
+            emptyMessage,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                bottomMargin = dp(12)
+            }
+        )
+
+        val scroll = ScrollView(this).apply {
+            isFillViewport = false
+            clipToPadding = false
+            setPadding(0, dp(2), 0, dp(4))
+        }
+
         listContainer = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
         }
+
         scroll.addView(listContainer)
-        root.addView(
+
+        content.addView(
             scroll,
             LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -198,16 +313,39 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        val addButton = MaterialButton(this).apply {
-            text = "Agregar lugar"
+        val addButton = MaterialButton(
+            this,
+            null,
+            com.google.android.material.R.attr.materialButtonStyle
+        ).apply {
+            text = "＋  Agregar lugar"
+            textSize = 16f
+            isAllCaps = false
+            cornerRadius = dp(14)
+            backgroundTintList = android.content.res.ColorStateList.valueOf(
+                getColor(R.color.campus_navy)
+            )
+            setTextColor(Color.WHITE)
             setOnClickListener { showPlaceDialog(null) }
         }
-        root.addView(
+
+        content.addView(
             addButton,
             LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                dp(52)
-            ).apply { topMargin = dp(8) }
+                dp(54)
+            ).apply {
+                topMargin = dp(12)
+            }
+        )
+
+        root.addView(
+            content,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0,
+                1f
+            )
         )
 
         setContentView(root)
@@ -239,46 +377,84 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+
+
     private fun renderPlaces(places: List<Place>) {
         listContainer.removeAllViews()
         emptyMessage.visibility = if (places.isEmpty()) View.VISIBLE else View.GONE
 
         places.forEach { place ->
             val card = MaterialCardView(this).apply {
-                radius = dp(14).toFloat()
+                radius = dp(18).toFloat()
                 cardElevation = dp(2).toFloat()
-                setCardBackgroundColor(0xFFFFFFFF.toInt())
+                setCardBackgroundColor(Color.WHITE)
                 strokeWidth = dp(1)
-                strokeColor = 0xFFE2E8F0.toInt()
+                strokeColor = getColor(R.color.campus_border)
+                useCompatPadding = true
             }
 
             val content = LinearLayout(this).apply {
                 orientation = LinearLayout.VERTICAL
-                setPadding(dp(14), dp(12), dp(14), dp(12))
+                setPadding(dp(15), dp(15), dp(15), dp(12))
             }
 
             val name = TextView(this).apply {
                 text = place.name
-                textSize = 18f
+                textSize = 19f
                 typeface = android.graphics.Typeface.DEFAULT_BOLD
-                setTextColor(0xFF172554.toInt())
+                setTextColor(getColor(R.color.campus_navy))
             }
-            content.addView(name)
+
+            content.addView(
+                name,
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    bottomMargin = dp(8)
+                }
+            )
 
             val category = TextView(this).apply {
                 text = place.category
-                textSize = 13f
-                setTextColor(0xFF2563EB.toInt())
-                setPadding(0, dp(3), 0, dp(5))
+                textSize = 12f
+                typeface = android.graphics.Typeface.DEFAULT_BOLD
+                setTextColor(getColor(R.color.campus_navy))
+                setPadding(dp(10), dp(5), dp(10), dp(5))
+                background = roundedBackground(
+                    Color.parseColor("#E3F1F3"),
+                    "#E3F1F3",
+                    20
+                )
             }
-            content.addView(category)
+
+            content.addView(
+                category,
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    bottomMargin = dp(10)
+                }
+            )
 
             if (place.description.isNotBlank()) {
-                content.addView(TextView(this).apply {
+                val description = TextView(this).apply {
                     text = place.description
                     textSize = 14f
-                    setTextColor(0xFF475569.toInt())
-                })
+                    setTextColor(getColor(R.color.campus_text_secondary))
+                    setLineSpacing(dp(3).toFloat(), 1f)
+                }
+
+                content.addView(
+                    description,
+                    LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        bottomMargin = dp(10)
+                    }
+                )
             }
 
             place.imageUri?.let { value ->
@@ -287,6 +463,11 @@ class MainActivity : AppCompatActivity() {
                     scaleType = ImageView.ScaleType.CENTER_CROP
                     adjustViewBounds = true
                     setImageURI(Uri.parse(value))
+                    background = roundedBackground(
+                        getColor(R.color.campus_cream),
+                        getColor(R.color.campus_cream),
+                        12
+                    )
                 }
 
                 content.addView(
@@ -295,36 +476,65 @@ class MainActivity : AppCompatActivity() {
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         dp(180)
                     ).apply {
-                        topMargin = dp(8)
-                        bottomMargin = dp(8)
+                        topMargin = dp(4)
+                        bottomMargin = dp(12)
                     }
                 )
             }
 
+            val separator = View(this).apply {
+                setBackgroundColor(getColor(R.color.campus_border))
+            }
+
+            content.addView(
+                separator,
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    dp(1)
+                ).apply {
+                    bottomMargin = dp(8)
+                }
+            )
+
             val actions = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
-                gravity = Gravity.END
+                gravity = Gravity.END or Gravity.CENTER_VERTICAL
             }
 
             if (place.latitude != null && place.longitude != null) {
                 actions.addView(actionButton("Mapa") { openMap(place) })
             }
+
             actions.addView(actionButton("Editar") { showPlaceDialog(place) })
             actions.addView(actionButton("Eliminar") { confirmDelete(place) })
-            content.addView(actions)
+
+            content.addView(
+                actions,
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+            )
 
             card.addView(content)
+
             listContainer.addView(
                 card,
                 LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply { bottomMargin = dp(10) }
+                ).apply {
+                    bottomMargin = dp(12)
+                }
             )
         }
     }
 
+
+
     private fun actionButton(label: String, action: () -> Unit): Button {
+        val isDelete = label == "Eliminar"
+
         return MaterialButton(
             this,
             null,
@@ -332,72 +542,192 @@ class MainActivity : AppCompatActivity() {
         ).apply {
             text = label
             textSize = 12f
+            isAllCaps = false
             minWidth = 0
-            setPadding(dp(8), 0, dp(8), 0)
+            minimumWidth = 0
+            minHeight = dp(38)
+            minimumHeight = dp(38)
+            cornerRadius = dp(10)
+            insetTop = 0
+            insetBottom = 0
+            setPadding(dp(10), 0, dp(10), 0)
+
+            setTextColor(
+                getColor(
+                    if (isDelete) R.color.campus_error
+                    else R.color.campus_navy
+                )
+            )
+
+            strokeColor = android.content.res.ColorStateList.valueOf(
+                getColor(
+                    if (isDelete) R.color.campus_error
+                    else R.color.campus_border
+                )
+            )
+
             setOnClickListener { action() }
         }
     }
 
+    private fun roundedBackground(
+        fillColor: Int,
+        strokeColor: String,
+        cornerRadius: Int
+    ): GradientDrawable {
+        return roundedBackground(
+            fillColor,
+            Color.parseColor(strokeColor),
+            cornerRadius
+        )
+    }
+
+    private fun roundedBackground(
+        fillColor: Int,
+        strokeColor: Int,
+        cornerRadius: Int
+    ): GradientDrawable {
+        return GradientDrawable().apply {
+            setColor(fillColor)
+            setCornerRadius(dp(cornerRadius).toFloat())
+            setStroke(dp(1), strokeColor)
+        }
+    }
+
+
+
     private fun showPlaceDialog(existing: Place?) {
         val form = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(dp(20), dp(8), dp(20), 0)
+            setPadding(dp(20), dp(8), dp(20), dp(8))
         }
 
-        fun field(hintText: String, value: String = ""): EditText {
-            return EditText(this).apply {
+        fun addLabel(text: String) {
+            form.addView(
+                TextView(this).apply {
+                    this.text = text
+                    textSize = 12f
+                    typeface = android.graphics.Typeface.DEFAULT_BOLD
+                    setTextColor(getColor(R.color.campus_text_secondary))
+                },
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    topMargin = dp(12)
+                    bottomMargin = dp(5)
+                }
+            )
+        }
+
+        fun field(
+            hintText: String,
+            value: String = "",
+            multiline: Boolean = false
+        ): EditText {
+            val input = EditText(this).apply {
                 hint = hintText
                 setText(value)
-                setSingleLine(hintText != "Descripción")
-                if (hintText == "Descripción") {
+                textSize = 15f
+                setTextColor(getColor(R.color.campus_text_primary))
+                setHintTextColor(getColor(R.color.campus_text_secondary))
+                setPadding(dp(12), dp(10), dp(12), dp(10))
+                background = roundedBackground(
+                    Color.WHITE,
+                    getColor(R.color.campus_border),
+                    12
+                )
+
+                if (multiline) {
                     minLines = 2
                     maxLines = 4
+                    gravity = Gravity.TOP
+                } else {
+                    setSingleLine(true)
                 }
-            }.also {
-                form.addView(
-                    it,
-                    LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                    )
-                )
             }
+
+            form.addView(
+                input,
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    if (multiline) dp(90) else dp(50)
+                )
+            )
+
+            return input
         }
 
-        val nameInput = field("Nombre", existing?.name.orEmpty())
+        addLabel("NOMBRE DEL LUGAR")
+        val nameInput = field("Ej. Biblioteca central", existing?.name.orEmpty())
 
-        val categorySpinner = Spinner(this)
-        val availableCategories = categories.filterNot { it == "Todas" }
-        categorySpinner.adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_dropdown_item,
-            availableCategories
+        addLabel("CATEGORÍA")
+        val categorySpinner = Spinner(this).apply {
+            adapter = ArrayAdapter(
+                this@MainActivity,
+                android.R.layout.simple_spinner_dropdown_item,
+                categories.filterNot { it == "Todas" }
+            )
+            background = roundedBackground(
+                Color.WHITE,
+                getColor(R.color.campus_border),
+                12
+            )
+            setPadding(dp(10), 0, dp(10), 0)
+
+            val options = categories.filterNot { it == "Todas" }
+            val index = options.indexOf(existing?.category)
+            if (index >= 0) setSelection(index)
+        }
+
+        form.addView(
+            categorySpinner,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                dp(50)
+            )
         )
-        val existingCategoryIndex = availableCategories.indexOf(existing?.category)
-        if (existingCategoryIndex >= 0) {
-            categorySpinner.setSelection(existingCategoryIndex)
-        }
-        form.addView(categorySpinner)
 
-        val descriptionInput = field("Descripción", existing?.description.orEmpty())
-        val latitudeInput = field("Latitud", existing?.latitude?.toString().orEmpty())
-        val longitudeInput = field("Longitud", existing?.longitude?.toString().orEmpty())
+        addLabel("DESCRIPCIÓN")
+        val descriptionInput = field(
+            "Información adicional del lugar",
+            existing?.description.orEmpty(),
+            multiline = true
+        )
+
+        addLabel("COORDENADAS (OPCIONAL)")
+        val latitudeInput = field(
+            "Latitud",
+            existing?.latitude?.toString().orEmpty()
+        )
+        val longitudeInput = field(
+            "Longitud",
+            existing?.longitude?.toString().orEmpty()
+        )
+
+        addLabel("FOTOGRAFÍA")
+        var imageUri = existing?.imageUri
 
         val imageStatus = TextView(this).apply {
-            text = if (existing?.imageUri != null) {
+            text = if (imageUri != null) {
                 "Fotografía seleccionada"
             } else {
-                "Sin fotografía"
+                "No se ha seleccionado una fotografía"
             }
-            setTextColor(0xFF475569.toInt())
-            setPadding(0, dp(8), 0, dp(4))
+            textSize = 13f
+            setTextColor(getColor(R.color.campus_text_secondary))
+            setPadding(0, dp(4), 0, dp(8))
         }
         form.addView(imageStatus)
 
-        var imageUri = existing?.imageUri
-
-        val galleryButton = MaterialButton(this).apply {
+        val galleryButton = MaterialButton(
+            this,
+            null,
+            com.google.android.material.R.attr.materialButtonOutlinedStyle
+        ).apply {
             text = "Seleccionar desde galería"
+            isAllCaps = false
+            cornerRadius = dp(10)
             setOnClickListener {
                 pendingImageCallback = { uri ->
                     imageUri = uri.toString()
@@ -407,10 +737,24 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        form.addView(galleryButton)
+        form.addView(
+            galleryButton,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                dp(48)
+            )
+        )
 
         val cameraButton = MaterialButton(this).apply {
             text = "Tomar fotografía"
+            isAllCaps = false
+            cornerRadius = dp(10)
+            backgroundTintList =
+                android.content.res.ColorStateList.valueOf(
+                    getColor(R.color.campus_teal)
+                )
+            setTextColor(Color.WHITE)
+
             setOnClickListener {
                 pendingImageCallback = { uri ->
                     imageUri = uri.toString()
@@ -420,52 +764,98 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        form.addView(cameraButton)
+        form.addView(
+            cameraButton,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                dp(48)
+            ).apply {
+                topMargin = dp(8)
+            }
+        )
 
         val scroll = ScrollView(this).apply {
             addView(form)
+            isFillViewport = false
         }
 
         val dialog = AlertDialog.Builder(this)
-            .setTitle(if (existing == null) "Nuevo lugar" else "Editar lugar")
+            .setTitle(
+                if (existing == null) "Registrar lugar"
+                else "Editar lugar"
+            )
             .setView(scroll)
             .setNegativeButton("Cancelar", null)
             .setPositiveButton("Guardar", null)
             .create()
 
         dialog.setOnShowListener {
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                val latitudeText = latitudeInput.text.toString().trim()
-                val longitudeText = longitudeInput.text.toString().trim()
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).apply {
+                setTextColor(getColor(R.color.campus_navy))
+                setOnClickListener {
+                    val name = nameInput.text.toString().trim()
+                    val latitudeText = latitudeInput.text.toString().trim()
+                    val longitudeText = longitudeInput.text.toString().trim()
 
-                val latitude = latitudeText.toDoubleOrNull()
-                val longitude = longitudeText.toDoubleOrNull()
+                    val latitude = latitudeText.toDoubleOrNull()
+                    val longitude = longitudeText.toDoubleOrNull()
 
-                if ((latitudeText.isNotEmpty() && latitude == null) ||
-                    (longitudeText.isNotEmpty() && longitude == null)
-                ) {
-                    Toast.makeText(
-                        this,
-                        "La latitud y longitud deben ser números válidos.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    return@setOnClickListener
+                    if (name.isBlank()) {
+                        nameInput.error = "Ingresá el nombre del lugar"
+                        nameInput.requestFocus()
+                        return@setOnClickListener
+                    }
+
+                    if ((latitudeText.isNotEmpty() && latitude == null) ||
+                        (longitudeText.isNotEmpty() && longitude == null)
+                    ) {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Ingresá coordenadas numéricas válidas.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@setOnClickListener
+                    }
+
+                    if ((latitude == null) != (longitude == null)) {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Ingresá ambas coordenadas o dejá las dos vacías.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@setOnClickListener
+                    }
+
+                    if (latitude != null && latitude !in -90.0..90.0) {
+                        latitudeInput.error = "La latitud debe estar entre -90 y 90"
+                        return@setOnClickListener
+                    }
+
+                    if (longitude != null && longitude !in -180.0..180.0) {
+                        longitudeInput.error = "La longitud debe estar entre -180 y 180"
+                        return@setOnClickListener
+                    }
+
+                    val place = Place(
+                        id = existing?.id ?: UUID.randomUUID().toString(),
+                        name = name,
+                        category = categorySpinner.selectedItem.toString(),
+                        description = descriptionInput.text.toString().trim(),
+                        latitude = latitude,
+                        longitude = longitude,
+                        imageUri = imageUri
+                    )
+
+                    presenter.save(place)
+                    dialog.dismiss()
                 }
-
-                val place = Place(
-                    id = existing?.id ?: UUID.randomUUID().toString(),
-                    name = nameInput.text.toString(),
-                    category = categorySpinner.selectedItem.toString(),
-                    description = descriptionInput.text.toString().trim(),
-                    latitude = latitude,
-                    longitude = longitude,
-                    imageUri = imageUri
-                )
-
-                presenter.save(place)
-                dialog.dismiss()
             }
+
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(
+                getColor(R.color.campus_text_secondary)
+            )
         }
+
         dialog.show()
     }
 

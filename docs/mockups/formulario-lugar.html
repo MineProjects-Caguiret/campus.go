@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusGo | Nuevo lugar</title>
+    <link rel="stylesheet" href="../styles/mockups.css">
+</head>
+<body>
+<main class="phone">
+    <div class="status-bar"><span>9:41</span><span>Campus · LTE · 100%</span></div>
+
+    <header class="app-header">
+        <div class="brand">
+            <img src="campusgo-logo.svg" alt="Logo CampusGo">
+            <div>
+                <h1 class="brand-name">CampusGo</h1>
+                <p class="brand-subtitle">Administración de lugares</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="content">
+        <h2 class="page-title">Nuevo lugar</h2>
+        <p class="page-description">Completá la información del espacio universitario.</p>
+
+        <form>
+            <div class="field">
+                <label for="name">Nombre del lugar</label>
+                <input class="input" id="name" placeholder="Ej. Biblioteca Central">
+            </div>
+
+            <div class="field">
+                <label for="category">Categoría</label>
+                <select class="input" id="category">
+                    <option>Seleccionar categoría</option>
+                    <option selected>Biblioteca</option>
+                    <option>Comedor</option>
+                    <option>Laboratorio</option>
+                    <option>Oficina</option>
+                    <option>Deporte</option>
+                    <option>Otro</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="description">Descripción</label>
+                <textarea class="input" id="description" placeholder="Describí el lugar y su utilidad..."></textarea>
+            </div>
+
+            <div class="two-columns">
+                <div class="field">
+                    <label for="latitude">Latitud</label>
+                    <input class="input" id="latitude" placeholder="9.9765">
+                </div>
+                <div class="field">
+                    <label for="longitude">Longitud</label>
+                    <input class="input" id="longitude" placeholder="-84.8384">
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Fotografía del lugar</label>
+                <div class="photo-box">
+                    <p class="photo-title">Agregar fotografía</p>
+                    <span class="photo-options">Cámara &nbsp; · &nbsp; Galería</span>
+                </div>
+            </div>
+
+            <div class="button-row">
+                <div class="button">Cancelar</div>
+                <div class="button primary">Guardar lugar</div>
+            </div>
+        </form>
+    </section>
+
+    <div class="home-indicator"></div>
+</main>
+</body>
+</html>

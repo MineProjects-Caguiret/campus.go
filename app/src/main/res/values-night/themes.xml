@@ -1,7 +1,16 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
     <style name="Base.Theme.Campusgo" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/campus_navy</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/campus_teal</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSurface">@color/campus_surface</item>
+        <item name="android:colorAccent">@color/campus_teal</item>
+        <item name="android:statusBarColor">@color/campus_navy</item>
+        <item name="android:navigationBarColor">@color/campus_cream</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowBackground">@color/campus_cream</item>
     </style>
 </resources>
