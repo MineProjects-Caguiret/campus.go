@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CampusGo</string>
+    <string name="toolbar_subtitle">Explore your campus services</string>
+
+    <string name="search_section">SEARCH PLACES</string>
+    <string name="search_hint">Name, building or service...</string>
+    <string name="category_label">CATEGORY</string>
+    <string name="places_title">Campus places</string>
+    <string name="empty_places">No places registered yet.\nAdd the first one to get started.</string>
+    <string name="add_place">＋  Add place</string>
+
+    <string name="category_all">All</string>
+    <string name="category_building">Building</string>
+    <string name="category_library">Library</string>
+    <string name="category_cafeteria">Cafeteria</string>
+    <string name="category_laboratory">Laboratory</string>
+    <string name="category_office">Office</string>
+    <string name="category_sports">Sports</string>
+    <string name="category_other">Other</string>
+
+    <string name="place_name_label">PLACE NAME</string>
+    <string name="place_name_hint">e.g. Main library</string>
+    <string name="description_label">DESCRIPTION</string>
+    <string name="description_hint">Additional information about the place</string>
+    <string name="coordinates_label">COORDINATES (OPTIONAL)</string>
+    <string name="latitude_hint">Latitude</string>
+    <string name="longitude_hint">Longitude</string>
+    <string name="photo_label">PHOTO</string>
+    <string name="select_gallery">Select from gallery</string>
+    <string name="take_photo">Take photo</string>
+    <string name="photo_selected">Photo selected</string>
+    <string name="photo_captured">Photo captured</string>
+    <string name="photo_not_selected">No photo selected</string>
+    <string name="photo_description">Photo of %1$s</string>
+
+    <string name="action_map">Map</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_save">Save</string>
+    <string name="action_register">Register place</string>
+    <string name="action_update">Edit place</string>
+    <string name="confirm_delete_title">Delete place</string>
+    <string name="confirm_delete_message">Do you want to delete \"%1$s\"?</string>
+
+    <string name="error_image_permission">Could not retain access to the image.</string>
+    <string name="error_save_photo">Could not save the photo.</string>
+    <string name="error_maps_unavailable">No maps application is installed.</string>
+    <string name="error_name_required">Enter the place name.</string>
+    <string name="error_coordinates_invalid">Enter valid numeric coordinates.</string>
+    <string name="error_coordinates_pair">Enter both coordinates or leave both empty.</string>
+    <string name="error_latitude_range">Latitude must be between -90 and 90.</string>
+    <string name="error_longitude_range">Longitude must be between -180 and 180.</string>
+</resources>

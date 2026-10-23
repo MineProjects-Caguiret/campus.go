@@ -4,7 +4,14 @@ import ac.cr.utn.campusgo.data.datasource.local.SharedPreferencesPlaceDataSource
 import ac.cr.utn.campusgo.data.repositories.PlaceRepositoryImpl
 import ac.cr.utn.campusgo.domain.entities.Place
 import ac.cr.utn.campusgo.domain.services.PlaceService
-import ac.cr.utn.campusgo.presentation.PlacePresenter
+import ac.cr.utn.campusgo.presentation.ALL_CATEGORIES
+import ac.cr.utn.campusgo.presentation.PlaceViewModel
+import ac.cr.utn.campusgo.presentation.PlaceViewModelFactory
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.launch
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -35,12 +42,13 @@ import android.graphics.drawable.GradientDrawable
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var presenter: PlacePresenter
+    private lateinit var viewModel: PlaceViewModel
     private lateinit var listContainer: LinearLayout
     private lateinit var searchInput: EditText
     private lateinit var categoryFilter: Spinner
     private lateinit var emptyMessage: TextView
     private lateinit var photoService: PhotoService
+
 
     private val categories = listOf(
         "Todas",
@@ -52,6 +60,23 @@ class MainActivity : AppCompatActivity() {
         "Deporte",
         "Otro"
     )
+
+    private fun categoryLabels(): List<String> = listOf(
+        getString(R.string.category_all),
+        getString(R.string.category_building),
+        getString(R.string.category_library),
+        getString(R.string.category_cafeteria),
+        getString(R.string.category_laboratory),
+        getString(R.string.category_office),
+        getString(R.string.category_sports),
+        getString(R.string.category_other)
+    )
+
+    private fun categoryLabel(category: String): String {
+        val index = categories.indexOf(category)
+        return categoryLabels().getOrElse(index) { category }
+    }
+
 
     private var pendingImageCallback: ((Uri) -> Unit)? = null
 
@@ -105,18 +130,34 @@ class MainActivity : AppCompatActivity() {
 
         val service = PlaceService(repository, photoService)
 
-        presenter = PlacePresenter(
-            service = service,
-            onPlacesChanged = { places -> renderPlaces(places) },
-            onError = { message ->
-                Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-            }
-        )
+        viewModel = ViewModelProvider(
+            this,
+            PlaceViewModelFactory(service)
+        )[PlaceViewModel::class.java]
 
         buildScreen()
-        presenter.load()
+        observeUiState()
     }
 
+
+    private fun observeUiState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    renderPlaces(state.places)
+
+                    state.errorMessage?.let { message ->
+                        Toast.makeText(
+                            this@MainActivity,
+                            message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                        viewModel.clearError()
+                    }
+                }
+            }
+        }
+    }
 
     private fun buildScreen() {
         val root = LinearLayout(this).apply {
@@ -209,7 +250,7 @@ class MainActivity : AppCompatActivity() {
             adapter = ArrayAdapter(
                 this@MainActivity,
                 android.R.layout.simple_spinner_dropdown_item,
-                categories
+                categoryLabels()
             )
             background = roundedBackground(
                 Color.WHITE,
@@ -351,10 +392,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(root)
 
         searchInput.addTextChangedListener(SimpleTextWatcher {
-            presenter.filter(
-                searchInput.text.toString(),
-                categoryFilter.selectedItem?.toString() ?: "Todas"
-            )
+            viewModel.updateSearch(searchInput.text.toString())
         })
 
         categoryFilter.onItemSelectedListener =
@@ -365,9 +403,9 @@ class MainActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
-                    presenter.filter(
-                        searchInput.text.toString(),
-                        categories[position]
+                    val selectedCategory = categories[position]
+                    viewModel.updateCategory(
+                        if (position == 0) ALL_CATEGORIES else selectedCategory
                     )
                 }
 
@@ -416,7 +454,7 @@ class MainActivity : AppCompatActivity() {
             )
 
             val category = TextView(this).apply {
-                text = place.category
+                text = categoryLabel(place.category)
                 textSize = 12f
                 typeface = android.graphics.Typeface.DEFAULT_BOLD
                 setTextColor(getColor(R.color.campus_navy))
@@ -459,7 +497,7 @@ class MainActivity : AppCompatActivity() {
 
             place.imageUri?.let { value ->
                 val image = ImageView(this).apply {
-                    contentDescription = "Fotografía de ${place.name}"
+                    contentDescription = getString(R.string.photo_description, place.name)
                     scaleType = ImageView.ScaleType.CENTER_CROP
                     adjustViewBounds = true
                     setImageURI(Uri.parse(value))
@@ -502,12 +540,11 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (place.latitude != null && place.longitude != null) {
-                actions.addView(actionButton("Mapa") { openMap(place) })
+                actions.addView(actionButton(getString(R.string.action_map)) { openMap(place) })
             }
 
-            actions.addView(actionButton("Editar") { showPlaceDialog(place) })
-            actions.addView(actionButton("Eliminar") { confirmDelete(place) })
-
+            actions.addView(actionButton(getString(R.string.action_edit)) { showPlaceDialog(place) })
+            actions.addView(actionButton(getString(R.string.action_delete)) { confirmDelete(place) })
             content.addView(
                 actions,
                 LinearLayout.LayoutParams(
@@ -533,7 +570,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun actionButton(label: String, action: () -> Unit): Button {
-        val isDelete = label == "Eliminar"
+        val isDelete = label == getString(R.string.action_delete)
 
         return MaterialButton(
             this,
@@ -662,11 +699,14 @@ class MainActivity : AppCompatActivity() {
         val nameInput = field("Ej. Biblioteca central", existing?.name.orEmpty())
 
         addLabel("CATEGORÍA")
+        val formCategories = categories.drop(1)
+        val formCategoryLabels = categoryLabels().drop(1)
+
         val categorySpinner = Spinner(this).apply {
             adapter = ArrayAdapter(
                 this@MainActivity,
                 android.R.layout.simple_spinner_dropdown_item,
-                categories.filterNot { it == "Todas" }
+                formCategoryLabels
             )
             background = roundedBackground(
                 Color.WHITE,
@@ -675,8 +715,7 @@ class MainActivity : AppCompatActivity() {
             )
             setPadding(dp(10), 0, dp(10), 0)
 
-            val options = categories.filterNot { it == "Todas" }
-            val index = options.indexOf(existing?.category)
+            val index = formCategories.indexOf(existing?.category)
             if (index >= 0) setSelection(index)
         }
 
@@ -839,14 +878,14 @@ class MainActivity : AppCompatActivity() {
                     val place = Place(
                         id = existing?.id ?: UUID.randomUUID().toString(),
                         name = name,
-                        category = categorySpinner.selectedItem.toString(),
+                        category = formCategories[categorySpinner.selectedItemPosition],
                         description = descriptionInput.text.toString().trim(),
                         latitude = latitude,
                         longitude = longitude,
                         imageUri = imageUri
                     )
 
-                    presenter.save(place)
+                    viewModel.savePlace(place)
                     dialog.dismiss()
                 }
             }
@@ -865,7 +904,7 @@ class MainActivity : AppCompatActivity() {
             .setMessage("¿Deseás eliminar \"${place.name}\"?")
             .setNegativeButton("Cancelar", null)
             .setPositiveButton("Eliminar") { _, _ ->
-                presenter.delete(place.id)
+                viewModel.deletePlace(place.id)
             }
             .show()
     }
