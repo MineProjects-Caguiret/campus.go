@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/form_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/campus_cream"
+    android:fillViewport="true"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:id="@+id/form_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/form_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_register"
+            android:textColor="@color/campus_navy"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/place_name_label"
+            android:textColor="@color/campus_text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="6dp" />
+
+        <EditText
+            android:id="@+id/input_place_name"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/form_field_background"
+            android:hint="@string/place_name_hint"
+            android:inputType="textCapSentences"
+            android:maxLength="80"
+            android:paddingHorizontal="12dp"
+            android:textColor="@color/campus_text_primary"
+            android:textColorHint="@color/campus_text_secondary"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/category_label"
+            android:textColor="@color/campus_text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="6dp" />
+
+        <Spinner
+            android:id="@+id/input_place_category"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/form_field_background"
+            android:paddingHorizontal="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/description_label"
+            android:textColor="@color/campus_text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="6dp" />
+
+        <EditText
+            android:id="@+id/input_place_description"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/form_field_background"
+            android:gravity="top"
+            android:hint="@string/description_hint"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLength="500"
+            android:padding="12dp"
+            android:textColor="@color/campus_text_primary"
+            android:textColorHint="@color/campus_text_secondary"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/coordinates_label"
+            android:textColor="@color/campus_text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="6dp" />
+
+        <EditText
+            android:id="@+id/input_latitude"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/form_field_background"
+            android:hint="@string/latitude_hint"
+            android:inputType="numberDecimal|numberSigned"
+            android:paddingHorizontal="12dp"
+            android:textColor="@color/campus_text_primary"
+            android:textColorHint="@color/campus_text_secondary"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/input_longitude"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/form_field_background"
+            android:hint="@string/longitude_hint"
+            android:inputType="numberDecimal|numberSigned"
+            android:paddingHorizontal="12dp"
+            android:textColor="@color/campus_text_primary"
+            android:textColorHint="@color/campus_text_secondary"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/photo_label"
+            android:textColor="@color/campus_text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="6dp" />
+
+        <TextView
+            android:id="@+id/text_photo_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/photo_not_selected"
+            android:textColor="@color/campus_text_secondary"
+            android:textSize="13sp"
+            android:paddingVertical="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_select_gallery"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="@string/select_gallery"
+            android:textAllCaps="false" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_take_photo"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/campus_teal"
+            android:text="@string/take_photo"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
+
+        <ProgressBar
+            android:id="@+id/form_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginTop="16dp"
+            android:indeterminate="true"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginTop="24dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_cancel"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="52dp"
+                android:text="@string/action_cancel"
+                android:textAllCaps="false" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_save"
+                android:layout_width="wrap_content"
+                android:layout_height="52dp"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/campus_navy"
+                android:text="@string/action_save"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
