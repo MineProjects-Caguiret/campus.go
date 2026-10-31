@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusGo | Confirmar eliminación</title>
+    <link rel="stylesheet" href="../styles/mockups.css">
+</head>
+<body>
+<main class="phone">
+    <div class="status-bar"><span>9:41</span><span>Campus · LTE · 100%</span></div>
+
+    <header class="app-header">
+        <div class="brand">
+            <img src="campusgo-logo.svg" alt="Logo CampusGo">
+            <div>
+                <h1 class="brand-name">CampusGo</h1>
+                <p class="brand-subtitle">Lugares del campus</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="overlay">
+        <article class="dialog" role="alertdialog" aria-labelledby="dialog-title"
+                 aria-describedby="dialog-message">
+            <div class="dialog-icon" aria-hidden="true">!</div>
+            <h2 class="dialog-title" id="dialog-title">Eliminar lugar</h2>
+            <p class="dialog-message" id="dialog-message">
+                ¿Deseás eliminar
+                <span class="place-highlight">Biblioteca Central</span>?
+                Esta acción no se puede deshacer.
+            </p>
+
+            <div class="button-row">
+                <div class="button">Cancelar</div>
+                <div class="button danger">Eliminar</div>
+            </div>
+        </article>
+    </section>
+
+    <div class="home-indicator"></div>
+</main>
+</body>
+</html>
