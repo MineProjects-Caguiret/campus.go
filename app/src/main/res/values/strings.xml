@@ -58,4 +58,6 @@
     <string name="error_place_save">No se pudo guardar el lugar. Verificá los datos ingresados.</string>
     <string name="error_invalid_coordinates">Ingresá coordenadas numéricas válidas.</string>
     <string name="error_incomplete_coordinates">Ingresá ambas coordenadas o dejá las dos vacías.</string>
+    <string name="confirm_update_title">¿Guardar cambios?</string>
+    <string name="confirm_update_message">¿Querés actualizar este lugar?</string>
 </resources>

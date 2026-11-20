@@ -22,6 +22,7 @@ import ac.cr.utn.campusgo.R
 import ac.cr.utn.campusgo.SimpleTextWatcher
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
+import androidx.appcompat.app.AlertDialog
 
 class PlaceFormActivity : AppCompatActivity() {
 
@@ -198,7 +199,20 @@ class PlaceFormActivity : AppCompatActivity() {
         }
 
         saveButton.setOnClickListener {
-            viewModel.savePlace()
+            val isEditing = intent.getStringExtra(EXTRA_PLACE_ID) != null
+
+            if (isEditing) {
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.confirm_update_title)
+                    .setMessage(R.string.confirm_update_message)
+                    .setNegativeButton(R.string.action_cancel, null)
+                    .setPositiveButton(R.string.action_save) { _, _ ->
+                        viewModel.savePlace()
+                    }
+                    .show()
+            } else {
+                viewModel.savePlace()
+            }
         }
     }
 

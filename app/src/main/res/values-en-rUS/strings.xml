@@ -58,5 +58,6 @@
     <string name="error_place_save">Unable to save the place. Check the entered information.</string>
     <string name="error_invalid_coordinates">Enter valid numeric coordinates.</string>
     <string name="error_incomplete_coordinates">Enter both coordinates or leave both fields empty.</string>
-
+    <string name="confirm_update_title">Save changes?</string>
+    <string name="confirm_update_message">Do you want to update this place?</string>
 </resources>
