@@ -52,4 +52,11 @@
     <string name="error_coordinates_pair">Enter both coordinates or leave both empty.</string>
     <string name="error_latitude_range">Latitude must be between -90 and 90.</string>
     <string name="error_longitude_range">Longitude must be between -180 and 180.</string>
+    <string name="error_place_not_found">The requested place was not found.</string>
+    <string name="error_place_load">Unable to load the place information.</string>
+    <string name="error_photo_save">Unable to save the photo.</string>
+    <string name="error_place_save">Unable to save the place. Check the entered information.</string>
+    <string name="error_invalid_coordinates">Enter valid numeric coordinates.</string>
+    <string name="error_incomplete_coordinates">Enter both coordinates or leave both fields empty.</string>
+
 </resources>

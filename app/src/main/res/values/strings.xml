@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CampusGo</string>
-    <string name="toolbar_subtitle">Explorá los servicios de tu campus</string>
+    <string name="toolbar_subtitle">ExplorÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ los servicios de tu campus</string>
 
     <string name="search_section">BUSCAR LUGARES</string>
     <string name="search_hint">Nombre, edificio o servicio...</string>
-    <string name="category_label">CATEGORÍA</string>
+    <string name="category_label">CATEGORÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂA</string>
     <string name="places_title">Lugares del campus</string>
-    <string name="empty_places">Todavía no hay lugares registrados.\nAgregá el primero para comenzar.</string>
-    <string name="add_place">＋  Agregar lugar</string>
+    <string name="empty_places">TodavÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­a no hay lugares registrados.\nAgregÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ el primero para comenzar.</string>
+    <string name="add_place">ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¼ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¹  Agregar lugar</string>
 
     <string name="category_all">Todas</string>
     <string name="category_building">Edificio</string>
@@ -21,18 +21,18 @@
 
     <string name="place_name_label">NOMBRE DEL LUGAR</string>
     <string name="place_name_hint">Ej. Biblioteca central</string>
-    <string name="description_label">DESCRIPCIÓN</string>
-    <string name="description_hint">Información adicional del lugar</string>
+    <string name="description_label">DESCRIPCIÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“N</string>
+    <string name="description_hint">InformaciÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³n adicional del lugar</string>
     <string name="coordinates_label">COORDENADAS (OPCIONAL)</string>
     <string name="latitude_hint">Latitud</string>
     <string name="longitude_hint">Longitud</string>
-    <string name="photo_label">FOTOGRAFÍA</string>
-    <string name="select_gallery">Seleccionar desde galería</string>
-    <string name="take_photo">Tomar fotografía</string>
-    <string name="photo_selected">Fotografía seleccionada</string>
-    <string name="photo_captured">Fotografía capturada</string>
-    <string name="photo_not_selected">No se ha seleccionado una fotografía</string>
-    <string name="photo_description">Fotografía de %1$s</string>
+    <string name="photo_label">FOTOGRAFÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂA</string>
+    <string name="select_gallery">Seleccionar desde galerÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­a</string>
+    <string name="take_photo">Tomar fotografÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­a</string>
+    <string name="photo_selected">FotografÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­a seleccionada</string>
+    <string name="photo_captured">FotografÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­a capturada</string>
+    <string name="photo_not_selected">No se ha seleccionado una fotografÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­a</string>
+    <string name="photo_description">FotografÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­a de %1$s</string>
 
     <string name="action_map">Mapa</string>
     <string name="action_edit">Editar</string>
@@ -42,14 +42,20 @@
     <string name="action_register">Registrar lugar</string>
     <string name="action_update">Editar lugar</string>
     <string name="confirm_delete_title">Eliminar lugar</string>
-    <string name="confirm_delete_message">¿Deseás eliminar \"%1$s\"?</string>
+    <string name="confirm_delete_message">ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¿DeseÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡s eliminar \"%1$s\"?</string>
 
     <string name="error_image_permission">No se pudo conservar el acceso a la imagen.</string>
-    <string name="error_save_photo">No se pudo guardar la fotografía.</string>
-    <string name="error_maps_unavailable">No hay una aplicación de mapas instalada.</string>
-    <string name="error_name_required">Ingresá el nombre del lugar.</string>
-    <string name="error_coordinates_invalid">Ingresá coordenadas numéricas válidas.</string>
-    <string name="error_coordinates_pair">Ingresá ambas coordenadas o dejá las dos vacías.</string>
+    <string name="error_save_photo">No se pudo guardar la fotografÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­a.</string>
+    <string name="error_maps_unavailable">No hay una aplicaciÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³n de mapas instalada.</string>
+    <string name="error_name_required">IngresÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ el nombre del lugar.</string>
+    <string name="error_coordinates_invalid">IngresÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ coordenadas numÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©ricas vÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡lidas.</string>
+    <string name="error_coordinates_pair">IngresÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ ambas coordenadas o dejÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ las dos vacÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­as.</string>
     <string name="error_latitude_range">La latitud debe estar entre -90 y 90.</string>
     <string name="error_longitude_range">La longitud debe estar entre -180 y 180.</string>
+    <string name="error_place_not_found">No se encontró el lugar solicitado.</string>
+    <string name="error_place_load">No se pudo cargar la información del lugar.</string>
+    <string name="error_photo_save">No se pudo guardar la fotografía.</string>
+    <string name="error_place_save">No se pudo guardar el lugar. Verificá los datos ingresados.</string>
+    <string name="error_invalid_coordinates">Ingresá coordenadas numéricas válidas.</string>
+    <string name="error_incomplete_coordinates">Ingresá ambas coordenadas o dejá las dos vacías.</string>
 </resources>

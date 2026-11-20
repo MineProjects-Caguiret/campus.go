@@ -1,13 +1,12 @@
 package ac.cr.utn.campusgo
 
-import ac.cr.utn.campusgo.data.datasource.local.SharedPreferencesPlaceDataSource
-import ac.cr.utn.campusgo.data.repositories.PlaceRepositoryImpl
 import ac.cr.utn.campusgo.domain.entities.Place
 import ac.cr.utn.campusgo.domain.services.PlaceService
 import ac.cr.utn.campusgo.presentation.ALL_CATEGORIES
 import ac.cr.utn.campusgo.presentation.PlaceViewModel
 import ac.cr.utn.campusgo.presentation.PlaceViewModelFactory
 import androidx.lifecycle.Lifecycle
+import ac.cr.utn.campusgo.presentation.form.PlaceFormActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -33,8 +32,6 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import java.util.UUID
-import ac.cr.utn.campusgo.data.datasource.local.InternalPhotoLocalDataSource
-import ac.cr.utn.campusgo.data.repositories.PhotoRepositoryImpl
 import ac.cr.utn.campusgo.domain.services.PhotoService
 import android.widget.ImageView
 import android.graphics.Color
@@ -48,6 +45,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var categoryFilter: Spinner
     private lateinit var emptyMessage: TextView
     private lateinit var photoService: PhotoService
+
+    private val placeFormLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            viewModel.loadPlaces()
+        }
+    }
 
 
     private val categories = listOf(
@@ -121,24 +126,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val dataSource = SharedPreferencesPlaceDataSource(applicationContext)
-        val repository = PlaceRepositoryImpl(dataSource)
+        val container = (application as CampusGoApplication).container
 
-        val photoDataSource = InternalPhotoLocalDataSource(applicationContext)
-        val photoRepository = PhotoRepositoryImpl(photoDataSource)
-        photoService = PhotoService(photoRepository)
-
-        val service = PlaceService(repository, photoService)
+        photoService = container.photoService
 
         viewModel = ViewModelProvider(
             this,
-            PlaceViewModelFactory(service)
+            PlaceViewModelFactory(container.placeService)
         )[PlaceViewModel::class.java]
 
         buildScreen()
         observeUiState()
     }
-
 
     private fun observeUiState() {
         lifecycleScope.launch {
@@ -632,270 +631,14 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     private fun showPlaceDialog(existing: Place?) {
-        val form = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(dp(20), dp(8), dp(20), dp(8))
+        val intent = Intent(this, PlaceFormActivity::class.java)
+
+        existing?.id?.let { placeId ->
+            intent.putExtra(PlaceFormActivity.EXTRA_PLACE_ID, placeId)
         }
 
-        fun addLabel(text: String) {
-            form.addView(
-                TextView(this).apply {
-                    this.text = text
-                    textSize = 12f
-                    typeface = android.graphics.Typeface.DEFAULT_BOLD
-                    setTextColor(getColor(R.color.campus_text_secondary))
-                },
-                LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply {
-                    topMargin = dp(12)
-                    bottomMargin = dp(5)
-                }
-            )
-        }
-
-        fun field(
-            hintText: String,
-            value: String = "",
-            multiline: Boolean = false
-        ): EditText {
-            val input = EditText(this).apply {
-                hint = hintText
-                setText(value)
-                textSize = 15f
-                setTextColor(getColor(R.color.campus_text_primary))
-                setHintTextColor(getColor(R.color.campus_text_secondary))
-                setPadding(dp(12), dp(10), dp(12), dp(10))
-                background = roundedBackground(
-                    Color.WHITE,
-                    getColor(R.color.campus_border),
-                    12
-                )
-
-                if (multiline) {
-                    minLines = 2
-                    maxLines = 4
-                    gravity = Gravity.TOP
-                } else {
-                    setSingleLine(true)
-                }
-            }
-
-            form.addView(
-                input,
-                LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    if (multiline) dp(90) else dp(50)
-                )
-            )
-
-            return input
-        }
-
-        addLabel("NOMBRE DEL LUGAR")
-        val nameInput = field("Ej. Biblioteca central", existing?.name.orEmpty())
-
-        addLabel("CATEGORÍA")
-        val formCategories = categories.drop(1)
-        val formCategoryLabels = categoryLabels().drop(1)
-
-        val categorySpinner = Spinner(this).apply {
-            adapter = ArrayAdapter(
-                this@MainActivity,
-                android.R.layout.simple_spinner_dropdown_item,
-                formCategoryLabels
-            )
-            background = roundedBackground(
-                Color.WHITE,
-                getColor(R.color.campus_border),
-                12
-            )
-            setPadding(dp(10), 0, dp(10), 0)
-
-            val index = formCategories.indexOf(existing?.category)
-            if (index >= 0) setSelection(index)
-        }
-
-        form.addView(
-            categorySpinner,
-            LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                dp(50)
-            )
-        )
-
-        addLabel("DESCRIPCIÓN")
-        val descriptionInput = field(
-            "Información adicional del lugar",
-            existing?.description.orEmpty(),
-            multiline = true
-        )
-
-        addLabel("COORDENADAS (OPCIONAL)")
-        val latitudeInput = field(
-            "Latitud",
-            existing?.latitude?.toString().orEmpty()
-        )
-        val longitudeInput = field(
-            "Longitud",
-            existing?.longitude?.toString().orEmpty()
-        )
-
-        addLabel("FOTOGRAFÍA")
-        var imageUri = existing?.imageUri
-
-        val imageStatus = TextView(this).apply {
-            text = if (imageUri != null) {
-                "Fotografía seleccionada"
-            } else {
-                "No se ha seleccionado una fotografía"
-            }
-            textSize = 13f
-            setTextColor(getColor(R.color.campus_text_secondary))
-            setPadding(0, dp(4), 0, dp(8))
-        }
-        form.addView(imageStatus)
-
-        val galleryButton = MaterialButton(
-            this,
-            null,
-            com.google.android.material.R.attr.materialButtonOutlinedStyle
-        ).apply {
-            text = "Seleccionar desde galería"
-            isAllCaps = false
-            cornerRadius = dp(10)
-            setOnClickListener {
-                pendingImageCallback = { uri ->
-                    imageUri = uri.toString()
-                    imageStatus.text = "Fotografía seleccionada"
-                }
-                imagePicker.launch(arrayOf("image/*"))
-            }
-        }
-
-        form.addView(
-            galleryButton,
-            LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                dp(48)
-            )
-        )
-
-        val cameraButton = MaterialButton(this).apply {
-            text = "Tomar fotografía"
-            isAllCaps = false
-            cornerRadius = dp(10)
-            backgroundTintList =
-                android.content.res.ColorStateList.valueOf(
-                    getColor(R.color.campus_teal)
-                )
-            setTextColor(Color.WHITE)
-
-            setOnClickListener {
-                pendingImageCallback = { uri ->
-                    imageUri = uri.toString()
-                    imageStatus.text = "Fotografía capturada"
-                }
-                cameraCapture.launch(null)
-            }
-        }
-
-        form.addView(
-            cameraButton,
-            LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                dp(48)
-            ).apply {
-                topMargin = dp(8)
-            }
-        )
-
-        val scroll = ScrollView(this).apply {
-            addView(form)
-            isFillViewport = false
-        }
-
-        val dialog = AlertDialog.Builder(this)
-            .setTitle(
-                if (existing == null) "Registrar lugar"
-                else "Editar lugar"
-            )
-            .setView(scroll)
-            .setNegativeButton("Cancelar", null)
-            .setPositiveButton("Guardar", null)
-            .create()
-
-        dialog.setOnShowListener {
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).apply {
-                setTextColor(getColor(R.color.campus_navy))
-                setOnClickListener {
-                    val name = nameInput.text.toString().trim()
-                    val latitudeText = latitudeInput.text.toString().trim()
-                    val longitudeText = longitudeInput.text.toString().trim()
-
-                    val latitude = latitudeText.toDoubleOrNull()
-                    val longitude = longitudeText.toDoubleOrNull()
-
-                    if (name.isBlank()) {
-                        nameInput.error = "Ingresá el nombre del lugar"
-                        nameInput.requestFocus()
-                        return@setOnClickListener
-                    }
-
-                    if ((latitudeText.isNotEmpty() && latitude == null) ||
-                        (longitudeText.isNotEmpty() && longitude == null)
-                    ) {
-                        Toast.makeText(
-                            this@MainActivity,
-                            "Ingresá coordenadas numéricas válidas.",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        return@setOnClickListener
-                    }
-
-                    if ((latitude == null) != (longitude == null)) {
-                        Toast.makeText(
-                            this@MainActivity,
-                            "Ingresá ambas coordenadas o dejá las dos vacías.",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        return@setOnClickListener
-                    }
-
-                    if (latitude != null && latitude !in -90.0..90.0) {
-                        latitudeInput.error = "La latitud debe estar entre -90 y 90"
-                        return@setOnClickListener
-                    }
-
-                    if (longitude != null && longitude !in -180.0..180.0) {
-                        longitudeInput.error = "La longitud debe estar entre -180 y 180"
-                        return@setOnClickListener
-                    }
-
-                    val place = Place(
-                        id = existing?.id ?: UUID.randomUUID().toString(),
-                        name = name,
-                        category = formCategories[categorySpinner.selectedItemPosition],
-                        description = descriptionInput.text.toString().trim(),
-                        latitude = latitude,
-                        longitude = longitude,
-                        imageUri = imageUri
-                    )
-
-                    viewModel.savePlace(place)
-                    dialog.dismiss()
-                }
-            }
-
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(
-                getColor(R.color.campus_text_secondary)
-            )
-        }
-
-        dialog.show()
+        placeFormLauncher.launch(intent)
     }
 
     private fun confirmDelete(place: Place) {
